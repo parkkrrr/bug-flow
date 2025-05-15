@@ -1,0 +1,23 @@
+import Link from 'next/link'
+import React from 'react'
+import { FaBug } from "react-icons/fa";
+
+const NavBar = () => {
+    const links = [
+        { label: "Dashboard", href: "/" },
+        { label: "Issues", href: "/issues" },
+    ]
+    return (
+        <nav className='flex space-x-6 px-5 mb-5 h-14 border-b items-center'>
+            <Link href="/" ><FaBug /></Link>
+            <ul className='flex space-x-4'>
+                {/* <li><Link href="/" className='text-zinc-500 hover:text-zinc-800 transition-colors'>Dashboard</Link></li>
+                <li><Link href="/issues">Issues</Link> </li> */}
+                {links.map(link => (<Link className='text-zinc-500 hover:text-zinc-800 transition-colors' key={link.href} href={link.href}>{link.label}</Link>))}
+
+            </ul>
+        </nav>
+    )
+}
+
+export default NavBar
