@@ -1,7 +1,6 @@
-import "@radix-ui/themes/styles.css";
+import ClientThemeProvider from "./ClientThemeProvider";
 import "./globals.css";
 import NavBar from "./NavBar";
-import { Theme } from "@radix-ui/themes";
 import { Inter } from "next/font/google";
 
 const inter = Inter({
@@ -9,20 +8,21 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // console.log('Layout rendered at', typeof window !== 'undefined' ? 'client' : 'server');
+
   return (
-  <html lang="en" className={inter.variable}>
-    <body>
-      <Theme accentColor="violet" radius="large">
-        <NavBar />
-        <main className="p-5">{children}</main>
-      </Theme>
-    </body>
-  </html>
+    <html lang="en" className={inter.variable}>
+      <body>
+        <ClientThemeProvider>
+          <NavBar />
+          <main className="p-5">{children}</main>
+        </ClientThemeProvider>
+      </body>
+    </html>
   );
 }
