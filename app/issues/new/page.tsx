@@ -21,10 +21,14 @@ const NewIssue = () => {
     formState: { errors },
   } = useForm<IssueForm>({
     resolver: zodResolver(createIssueSchema),
+    defaultValues: {
+      title: "", // start controlled
+      description: "",
+    },
   });
 
   const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting]= useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   return (
     <div className="max-w-xl">
@@ -38,7 +42,7 @@ const NewIssue = () => {
         onSubmit={handleSubmit(async (data) => {
           try {
             setIsSubmitting(true);
-            const res = await axios.post("/api/issues", data);
+            await axios.post("/api/issues", data);
             router.push("/issues");
           } catch (err) {
             setIsSubmitting(false);
@@ -64,7 +68,9 @@ const NewIssue = () => {
 
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
-        <Button disabled={isSubmitting}>Submit New Issue {isSubmitting&&<Spinner/>}</Button>
+        <Button disabled={isSubmitting}>
+          Submit New Issue {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
