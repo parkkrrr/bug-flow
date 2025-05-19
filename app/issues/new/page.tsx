@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { TextField, Button, Callout, Text } from "@radix-ui/themes";
+import { TextField, Button, Callout, Spinner } from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { useForm, Controller } from "react-hook-form";
@@ -24,6 +24,7 @@ const NewIssue = () => {
   });
 
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting]= useState(false);
   const router = useRouter();
   return (
     <div className="max-w-xl">
@@ -36,9 +37,11 @@ const NewIssue = () => {
         className=" space-y-3"
         onSubmit={handleSubmit(async (data) => {
           try {
+            setIsSubmitting(true);
             const res = await axios.post("/api/issues", data);
             router.push("/issues");
           } catch (err) {
+            setIsSubmitting(false);
             setError("An unexpected error occurred.");
           }
         })}
@@ -50,7 +53,7 @@ const NewIssue = () => {
             <TextField.Root placeholder="Title" {...field} />
           )}
         />
-       <ErrorMessage>{errors.title?.message}</ErrorMessage>
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           name="description"
           control={control}
@@ -58,13 +61,10 @@ const NewIssue = () => {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         />
-        
-          <ErrorMessage >
-            {errors.description?.message}
-          </ErrorMessage>
-      
 
-        <Button>Submit New Issue</Button>
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
+
+        <Button disabled={isSubmitting}>Submit New Issue {isSubmitting&&<Spinner/>}</Button>
       </form>
     </div>
   );
