@@ -2,7 +2,8 @@ import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import prisma from "@/prisma/client";
 import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
-import React from "react";
+import Markdown from "react-markdown";
+
 
 async function IssueDescription({ params }: { params: { id: string } }) {
   if (isNaN(parseInt(params.id))) notFound();
@@ -18,8 +19,8 @@ async function IssueDescription({ params }: { params: { id: string } }) {
         <IssueStatusBadge status={issue.status} />
         <Text>{issue.createdAt.toDateString()}</Text>
       </Flex>
-      <Card>
-        <p>{issue.description}</p>
+      <Card mt="4" className="prose">
+        <Markdown >{issue.description}</Markdown>
       </Card>
     </div>
   );
