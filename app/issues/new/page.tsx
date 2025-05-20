@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { TextField, Button, Callout, Spinner } from "@radix-ui/themes";
-import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
@@ -11,8 +10,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIssueSchema } from "@/app/validationSchema";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import dynamic from "next/dynamic";
 
 type IssueForm = z.infer<typeof createIssueSchema>;
+
+const SimpleMDE=dynamic(()=>import("react-simplemde-editor"),{ssr:false})
 
 const NewIssue = () => {
   const {
@@ -30,6 +32,7 @@ const NewIssue = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  
   return (
     <div className="max-w-xl">
       {error && (
