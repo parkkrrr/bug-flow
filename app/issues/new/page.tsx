@@ -47,7 +47,7 @@ const NewIssue = () => {
             setIsSubmitting(true);
             await axios.post("/api/issues", data);
             router.push("/issues");
-          } catch (err) {
+          } catch{
             setIsSubmitting(false);
             setError("An unexpected error occurred.");
           }
