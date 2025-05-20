@@ -1,13 +1,13 @@
 import React from 'react'
 import { ButtonNewIssue } from './ButtonNewIssue'
-import { Table } from '@radix-ui/themes'
+import { Table,Box } from '@radix-ui/themes'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 const LoadingIssuePage = () => {
     const issues=[1,2,3,4,5]
   return (
-    <div><ButtonNewIssue/>
+    <Box><ButtonNewIssue/>
     <Table.Root variant="surface">
             <Table.Header>
               <Table.Row>
@@ -38,7 +38,7 @@ const LoadingIssuePage = () => {
               ))}
             </Table.Body>
           </Table.Root>
-    </div>
+    </Box>
   )
 }
 
