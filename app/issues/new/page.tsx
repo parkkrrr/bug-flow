@@ -1,10 +1,8 @@
-import React from 'react'
-import IssueForm from '../_components/IssueForm'
+import React from "react";
+import IssueForm from "../_components/IssueFormClientWrapper";
 
 const NewIssuePage = () => {
-  return (
-    <IssueForm/>
-  )
-}
+  return <IssueForm />;
+};
 
-export default NewIssuePage
+export default NewIssuePage;

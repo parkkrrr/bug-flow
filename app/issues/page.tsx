@@ -1,6 +1,6 @@
 import prisma from "@/prisma/client";
 import { Table } from "@radix-ui/themes";
-import {IssueStatusBadge, Link} from "@/app/components/index"
+import { IssueStatusBadge, Link } from "@/app/components/index";
 import { ButtonNewIssue } from "./ButtonNewIssue";
 
 const IssuesPage = async () => {
@@ -26,10 +26,12 @@ const IssuesPage = async () => {
             <Table.Row key={issue.id}>
               <Table.Cell>
                 <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
-                <div className="block md:hidden"><IssueStatusBadge status={issue.status}/></div>
+                <div className="block md:hidden">
+                  <IssueStatusBadge status={issue.status} />
+                </div>
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
-                <IssueStatusBadge status={issue.status}/>
+                <IssueStatusBadge status={issue.status} />
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
                 {issue.createdAt.toDateString()}
@@ -41,5 +43,6 @@ const IssuesPage = async () => {
     </div>
   );
 };
+export const dynamic = "force-dynamic";
 
 export default IssuesPage;

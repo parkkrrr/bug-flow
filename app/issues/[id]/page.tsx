@@ -4,11 +4,12 @@ import { notFound } from "next/navigation";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
 
-async function IssueDescription({ params }: { params: { id: string } }) {
-  if (isNaN(parseInt(params.id))) notFound();
+async function IssueDescription({ params }: { params: Promise<{ id: string }> }) {
+  const {id} =await params
+  if (isNaN(parseInt(id))) notFound();
 
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: parseInt(id) },
   });
   if (!issue) notFound();
   return (

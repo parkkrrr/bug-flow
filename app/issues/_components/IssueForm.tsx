@@ -9,15 +9,13 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { issueSchema } from "@/app/validationSchema";
-import {ErrorMessage} from "@/app/components";
-import dynamic from "next/dynamic";
+import { ErrorMessage } from "@/app/components";
 import { Issue } from "@/app/generated/prisma";
+import SimpleMDE from "react-simplemde-editor";
 
 type IssueFormData = z.infer<typeof issueSchema>;
 
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
+
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const {
@@ -51,6 +49,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
             if (issue) await axios.patch(`/api/issues/${issue.id}`, data);
             else await axios.post("/api/issues", data);
             router.push("/issues");
+            router.refresh();
           } catch {
             setIsSubmitting(false);
             setError("An unexpected error occurred.");
