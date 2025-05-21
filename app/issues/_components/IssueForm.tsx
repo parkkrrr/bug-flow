@@ -8,34 +8,34 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createIssueSchema } from "@/app/validationSchema";
-import ErrorMessage from "@/app/components/ErrorMessage";
+import { issueSchema } from "@/app/validationSchema";
+import {ErrorMessage} from "@/app/components";
 import dynamic from "next/dynamic";
 import { Issue } from "@/app/generated/prisma";
 
-type IssueFormData = z.infer<typeof createIssueSchema>;
+type IssueFormData = z.infer<typeof issueSchema>;
 
-const SimpleMDE=dynamic(()=>import("react-simplemde-editor"),{ssr:false})
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 
-const IssueForm = ({issue}:{issue?:Issue}) => {
+const IssueForm = ({ issue }: { issue?: Issue }) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<IssueFormData>({
-    resolver: zodResolver(createIssueSchema),
-     defaultValues: {
-    title: issue?.title || "",
-    description: issue?.description || "",
-  },
+    resolver: zodResolver(issueSchema),
+    defaultValues: {
+      title: issue?.title || "",
+      description: issue?.description || "",
+    },
   });
-
-  console.log(issue)
 
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  
+
   return (
     <div className="max-w-xl">
       {error && (
@@ -48,9 +48,10 @@ const IssueForm = ({issue}:{issue?:Issue}) => {
         onSubmit={handleSubmit(async (data) => {
           try {
             setIsSubmitting(true);
-            await axios.post("/api/issues", data);
+            if (issue) await axios.patch(`/api/issues/${issue.id}`, data);
+            else await axios.post("/api/issues", data);
             router.push("/issues");
-          } catch{
+          } catch {
             setIsSubmitting(false);
             setError("An unexpected error occurred.");
           }
@@ -60,7 +61,7 @@ const IssueForm = ({issue}:{issue?:Issue}) => {
           name="title"
           control={control}
           render={({ field }) => (
-            <TextField.Root  placeholder="Title" {...field} />
+            <TextField.Root placeholder="Title" {...field} />
           )}
         />
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
@@ -68,14 +69,15 @@ const IssueForm = ({issue}:{issue?:Issue}) => {
           name="description"
           control={control}
           render={({ field }) => (
-            <SimpleMDE  defaultValue={issue?.description} placeholder="Description" {...field} />
+            <SimpleMDE placeholder="Description" {...field} />
           )}
         />
 
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
-        <Button disabled={isSubmitting}>{issue?"Edit"
-          :"Submit New Issue "}{isSubmitting && <Spinner />}
+        <Button disabled={isSubmitting}>
+          {issue ? "Update Issue" : "Submit New Issue "}
+          {isSubmitting && <Spinner />}
         </Button>
       </form>
     </div>
