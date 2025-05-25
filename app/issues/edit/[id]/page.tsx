@@ -1,7 +1,7 @@
 import React from "react";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
-import IssueForm from "../../_components/IssueFormClientWrapper";
+import IssueForm from "@/app/issues/_components/IssueFormClientWrapper";
 
 const EditIssue = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
