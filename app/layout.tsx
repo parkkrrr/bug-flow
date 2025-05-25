@@ -1,3 +1,4 @@
+import { Container } from "@radix-ui/themes";
 import ClientThemeProvider from "./ClientThemeProvider";
 import "./globals.css";
 import NavBar from "./NavBar";
@@ -20,7 +21,9 @@ export default function RootLayout({
       <body>
         <ClientThemeProvider>
           <NavBar />
-          <main className="p-5">{children}</main>
+          <main className="p-5">
+            <Container>{children}</Container>
+          </main>
         </ClientThemeProvider>
       </body>
     </html>
