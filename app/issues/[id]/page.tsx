@@ -4,12 +4,15 @@ import { notFound } from "next/navigation";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
 import DeleteIssueButton from "./DeleteIssueButton";
+import { getServerSession } from "next-auth";
+import authOptions from "@/app/api/auth/authOptions";
 
 async function IssueDescription({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const session=await getServerSession(authOptions);
   const { id } = await params;
   if (isNaN(parseInt(id))) notFound();
 
@@ -22,12 +25,12 @@ async function IssueDescription({
       <Box className="md:col-span-4">
         <IssueDetails issue={issue} />
       </Box>
-      <Box>
+      {session&&<Box>
         <Flex direction={"column"} gap="4">
         <EditIssueButton issueId={issue.id} />
         <DeleteIssueButton issueId={issue.id} />
         </Flex>
-      </Box>
+      </Box>}
     </Grid>
   );
 }

@@ -2,10 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   eslint: { ignoreDuringBuilds: true },
-  async header() {
+  async headers() {
     return [
-      { source: "/:path*" },
       {
+        source: "/:path*",
         headers: [
           {
             key: "Referrer-Policy",
