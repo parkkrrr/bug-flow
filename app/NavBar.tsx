@@ -1,21 +1,23 @@
 "use client";
 
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { FaBug } from "react-icons/fa";
-import { usePathname } from "next/navigation";
+import {
+  Avatar,
+  Box,
+  Container,
+  DropdownMenu,
+  Flex,
+  Text,
+  Button
+} from "@radix-ui/themes";
 import classNames from "classnames";
-import { useSession } from "next-auth/react";
-import { Box, Container, Flex } from "@radix-ui/themes";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { FaBug } from "react-icons/fa";
 
 const NavBar = () => {
   const currentPath = usePathname();
   const { status, data: session } = useSession();
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
 
   const links = [
     { label: "Dashboard", href: "/" },
@@ -32,7 +34,7 @@ const NavBar = () => {
             </Link>
             <ul className="flex space-x-4">
               {links.map((link) => {
-                const isActive = isHydrated && currentPath === link.href;
+                const isActive = currentPath === link.href;
                 return (
                   <li key={link.href}>
                     <Link
@@ -53,10 +55,26 @@ const NavBar = () => {
           </Flex>
           <Box>
             {status === "authenticated" && (
-              <Link href={"/api/auth/signout"}>Logout</Link>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <Avatar
+                    src={session.user?.image ?? undefined}
+                    fallback="?"
+                    size="2"
+                    radius="full"
+                    className="cursor-pointer"
+                  />
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Label>
+                    <Text size="2">{session.user!.email}</Text>
+                  </DropdownMenu.Label>
+                  <DropdownMenu.Item onClick={() => signOut()}>Logout</DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
             )}
             {status === "unauthenticated" && (
-              <Link href={"/api/auth/signin"}>Login</Link>
+              <Button onClick={()=>signIn()}>Login</Button>
             )}
           </Box>
         </Flex>
