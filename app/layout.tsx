@@ -3,6 +3,7 @@ import ClientThemeProvider from "./ClientThemeProvider";
 import "./globals.css";
 import NavBar from "./NavBar";
 import { Inter } from "next/font/google";
+import AuthProvider from "@/app/api/auth/Provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body>
-        <ClientThemeProvider>
-          <NavBar />
-          <main className="p-5">
-            <Container>{children}</Container>
-          </main>
-        </ClientThemeProvider>
+        <AuthProvider>
+          <ClientThemeProvider>
+            <NavBar />
+            <main className="p-5">
+              <Container>{children}</Container>
+            </main>
+          </ClientThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
