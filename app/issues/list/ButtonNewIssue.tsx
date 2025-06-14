@@ -6,7 +6,7 @@ import IssueStatusFilter from "./IssueStatusFilter";
 
 export function ButtonNewIssue() {
   return (
-    <Flex mb="5" justify={"between"}>
+    <Flex  justify={"between"}>
       <Button href="/issues/new">New Issue</Button>
       <IssueStatusFilter />
     </Flex>
