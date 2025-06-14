@@ -4,8 +4,10 @@ import prisma from "@/prisma/client";
 import { ButtonNewIssue } from "./ButtonNewIssue";
 import IssueTable, { IssueQuery } from "./IssueTable";
 import { Flex } from "@radix-ui/themes";
-const IssuesPage = async (props: { searchParams: IssueQuery }) => {
-  const searchParams = props.searchParams;
+
+const IssuesPage = async (props: { searchParams: Promise<IssueQuery> }) => {
+
+  const searchParams = await props.searchParams;
   const statuses = Object.values(Status);
   const orderBys: (keyof Issue)[] = ["title", "status", "createdAt"];
   const orderDirections = ["asc", "desc"] as const;

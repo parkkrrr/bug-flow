@@ -11,13 +11,16 @@ export interface IssueQuery {
   page: string;
 }
 
-const IssueTable = async (props: {
+const IssueTable = async ({
+  searchParams,
+  issues,
+}: {
   searchParams: IssueQuery;
   issues: Issue[];
 }) => {
-  const searchParams = props.searchParams;
-  const issues = props.issues;
-  
+//   const searchParams = (await props).searchParams;
+//   const issues = (await props).issues;
+
   const columns: { label: string; value: keyof Issue; className?: string }[] = [
     { label: "Issue", value: "title" },
     { label: "Status", value: "status", className: "hidden md:table-cell" },
