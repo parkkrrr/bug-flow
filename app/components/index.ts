@@ -3,4 +3,5 @@ export { default as Link } from "./Link";
 export { default as ErrorMessage } from "./ErrorMessage";
 export {default as Skeleton} from "./Skeleton"
 export {default as Button} from "./Button"
+export {default as Pagination} from "./Pagination"
 // export { IssueStatusBadge, Link, ErrorMessage };

@@ -12,12 +12,14 @@ type Props = {
   children: ReactNode;
   color?: radixColor;
   variant?: radixVariant;
+  disabled?: boolean | undefined;
 };
 
-const Button = ({ href, children, color, variant }: Props) => {
+const Button = ({ href, children, color, variant, disabled }: Props) => {
   const buttonProps = {
     ...(color && { color }),
     ...(variant && { variant }),
+    ...(disabled && { disabled }),
   };
   return (
     <Link href={href} passHref legacyBehavior>
