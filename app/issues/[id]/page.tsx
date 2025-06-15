@@ -9,7 +9,9 @@ import authOptions from "@/app/api/auth/authOptions";
 import AssigneeSelect from "./AssigneeSelect";
 import { cache } from "react";
 
-const fetchUser=cache((issueId: number) => prisma.issue.findUnique({ where: { id: issueId } }));
+const fetchUser = cache((issueId: number) =>
+  prisma.issue.findUnique({ where: { id: issueId } })
+);
 
 async function IssueDescription({
   params,
@@ -17,7 +19,7 @@ async function IssueDescription({
   params: Promise<{ id: string }>;
 }) {
   const session = await getServerSession(authOptions);
-  const { id } = await params;
+  const id = (await params).id;
   if (isNaN(parseInt(id))) notFound();
 
   const issue = await fetchUser(parseInt(id));
@@ -40,8 +42,13 @@ async function IssueDescription({
   );
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const issue = await fetchUser(parseInt(params.id));
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const id = (await params).id;
+  const issue = await fetchUser(parseInt(id));
   return {
     title: issue?.title,
     description: "Details of issue " + issue?.id,
